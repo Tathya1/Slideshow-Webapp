@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Page</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: #f2f2f2;
+            color: #333;
+            background-color: #d3e4ff;
+        }
+
+        header {
+            display: flex;
+            background-color: #4caf50;
+            text-align: center;
+            color: #fff;
+        }
+
+        #userDetails {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        #userDetails img {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+        }
+
+        #userInfo {
+            text-align: left;
+        }
+
+        h2 {
+            margin-bottom: 10px;
+        }
+
+        .footer1 {
+            text-align: center;
+            padding: 10px;
+            background-color: #333;
+            color: #fff;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .navbar {
+            padding: 0;
+            margin: 0;
+            height: 60px;
+            background-color: #2c3e50;
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            width: 100vw;
+            z-index: 1;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .andromeda {
+            color: #ecf0f1;
+            font-size: 28px;
+            font-weight: bold;
+            padding: 14px 16px;
+            margin-right: auto;
+        }
+
+        .userdetails {
+            color: #ecf0f1;
+            font-size: 20px;
+            font-weight: bold;
+            padding-top: 18px;
+            padding-right: 9px;
+        }
+
+        .user_image {
+            padding-right: 10px;
+            cursor: pointer;
+            width: 40px;
+            height: auto;
+        }
+
+        /* Dropdown styles */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            right: 0;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 800px;
+            margin: 70px auto 50px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .drop-zone {
+            border: 4px dashed #3498db;
+            padding: 40px;
+            cursor: pointer;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+
+        .drop-zone.highlight {
+            border-color: #2ecc71;
+        }
+
+        #preview-container {
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            padding-bottom: 20px;
+
+        }
+
+        .preview-item {
+
+            position: relative;
+            float: left;
+            margin: 25px;
+            text-align: center;
+            transition: transform 0.5s ease-in-out;
+            border-radius: 8px;
+
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-right: 50px;
+            margin-bottom: 50px;
+        }
+
+        .preview-item:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .preview-image {
+            max-width: 250px;
+            max-height: 150px;
+            border-radius: 8px;
+            transition: transform 0.3s ease-in-out;
+            margin-left: 25px;
+            margin-right: 25px;
+        }
+
+        .preview-item:hover .preview-image {
+            transform: scale(1.5);
+        }
+
+        .checkbox-container {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+        }
+
+        .cancel-button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: #e74c3c;
+            color: #fff;
+            border: none;
+            padding: 5px;
+            cursor: pointer;
+            border-radius: 50%;
+            font-size: 12px;
+        }
+
+        #start-slideshow {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #2ecc71;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Stylish Sidebar Styles */
+        .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 2;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+
+        .sidebar a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 20px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .sidebar a:hover {
+            color: #f1f1f1;
+        }
+
+        .sidebar .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+        .openbtn {
+            font-size: 20px;
+            cursor: pointer;
+            background-color: #111;
+            color: white;
+            /* padding: 10px 15px; */
+            border: none;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .openbtn:hover {
+            background-color: #444;
+        }
+
+        .drop-zone-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 200px;
+            /* Adjust the height as needed */
+            border: 4px dashed #3498db;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .drop-zone-label:hover {
+            border-color: #2ecc71;
+        }
+
+        h1 {
+            font-size: 35px;
+            margin: 0;
+            font-family: 'frozen';
+            font-weight: 700;
+
+            background-image: url("https://assets.codepen.io/209981/ice.jpg");
+            -webkit-background-clip: text;
+            background-size: contain;
+
+            text-align: center;
+            color: transparent;
+            font-weight: 900;
+            position: relative;
+
+
+
+            &::before {
+                content: attr(data-heading);
+                position: absolute;
+
+                background: linear-gradient(45deg, rgba(255, 255, 255, 0) 45%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0) 55%, rgba(255, 255, 255, 0) 100%);
+
+                animation: shine 4s infinite;
+                background-size: 200%;
+
+
+            }
+        }
+
+        @keyframes shine {
+            0% {
+                background-position: -120%;
+            }
+
+            10% {
+                background-position: 120%;
+            }
+
+            100% {
+                background-position: 120%;
+            }
+        }
+
+
+
+
+
+        /* Not needed for demo */
+
+        @font-face {
+            font-family: 'frozen';
+            src: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/209981/Ice%20kingdom%20-%20Bold%20-%20Por%20Kustren.woff');
+        }
+
+        #drop-zone {
+            background-image: url('https://www.lifewire.com/thmb/TRGYpWa4KzxUt1Fkgr3FqjOd6VQ=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/cloud-upload-a30f385a928e44e199a62210d578375a.jpg');
+            background-size: contain;
+            background-position-x: center;
+            background-repeat: no-repeat;
+            display: flex;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            right: 0;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .container1 {
+            width: 400px;
+            height: 400px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .center {
+            width: 180px;
+            height: 60px;
+            position: absolute;
+        }
+
+        .btn {
+            width: 180px;
+            height: 60px;
+            cursor: pointer;
+            background: transparent;
+            border: 1px solid #91C9FF;
+            outline: none;
+            transition: 1s ease-in-out;
+        }
+
+        svg {
+            position: absolute;
+            left: 0;
+            top: 0;
+            fill: none;
+            stroke: #fff;
+            stroke-dasharray: 150 480;
+            stroke-dashoffset: 150;
+            transition: 1s ease-in-out;
+        }
+
+        .btn:hover {
+            transition: 1s ease-in-out;
+            background: #4F95DA;
+        }
+
+        .btn:hover svg {
+            stroke-dashoffset: -480;
+        }
+
+        .btn span {
+            color: white;
+            font-size: 18px;
+            font-weight: 100;
+        }
+
+        #POO:hover {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <form action="{{url_for('upload_images')}}" method="post" enctype="multipart/form-data">
+
+        <div class="navbar" style="overflow: visible;">
+            <div class="openbtn">
+                <button onclick="goBack()" style="background-color: #111;" id="POO">
+                    <img src="static/left-arrow_5467935.png" alt=""
+                        style="height: 40px;width: 40px;margin-top: 5px;;margin-right: 9px;margin-left: 10px;">
+                </button>
+            </div>
+            <div class="openbtn" onclick="openNav()">
+                <pre> ☰ </pre>
+            </div>
+            <div class="andromeda">
+                <h1 contenteditable data-heading="Andromeda">
+                    ANDROMEDA
+                </h1>
+            </div>
+            <div class="userdetails">Welcome, {{user_home_name}}</div>
+            <div class="dropdown">
+                <img src="static/avatar-default-icon.png" alt="Dropdown" class="user_image" style="margin-top: 9px;">
+                <div class="dropdown-content">
+                    <a href="#">Edit Profile</a>
+                    <a href="{{ url_for('logout') }}">Logout</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <h2>Become a Galactic Explorer: Share Your Visual Voyage</h2>
+            <label class="drop-zone-label" id="drop-zone" for="file-input">
+                <input type="file" id="file-input" multiple style="color: white;opacity: 0;" name="input_file">
+            </label>
+            <div>
+
+                <button id="start-slideshow">CONFIRM</button>
+
+            </div>
+        </div>
+
+        <div style="display: flex;flex-direction: row;margin-left: 30px;margin-right: 30px;">
+            <div id="preview-container" class="clearfix">
+
+            </div>
+        </div>
+
+
+        <div id="mySidebar" class="sidebar">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+            <a href="#">Dashboard</a>
+            <a href="#">Files</a>
+            <a href="#">Settings</a>
+        </div>
+
+
+        <div class="footer1">
+            &copy; 2024 AndromedaNova Technologies. All rights reserved.
+        </div>
+
+    </form>
+
+    <script>
+        
+        function goBack() {
+            window.history.back();
+        }
+
+        function openNav() {
+            document.getElementById("mySidebar").style.width = "250px";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidebar").style.width = "0";
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const dropZone = document.getElementById('drop-zone');
+            const fileInput = document.getElementById('file-input');
+            const previewContainer = document.getElementById('preview-container');
+            let uploadedFiles = [];
+
+            function handleDrop(e) {
+                e.preventDefault();
+                dropZone.classList.remove('highlight');
+                const files = e.dataTransfer.files;
+                handleFiles(files);
+                uploadFiles(files);
+            }
+
+            fileInput.addEventListener('change', () => {
+                const files = fileInput.files;
+                handleFiles(files);
+            });
+
+            function handleFiles(files) {
+                for (const file of files) {
+                    if (!isFileUploaded(file.name)) {
+                        const reader = new FileReader();
+                        reader.onload = () => {
+                            const previewItem = document.createElement('div');
+                            previewItem.classList.add('preview-item');
+
+                            const img = document.createElement('img');
+                            img.src = reader.result;
+                            img.classList.add('preview-image');
+                            previewItem.appendChild(img);
+
+                            previewContainer.appendChild(previewItem);
+                        };
+                        reader.readAsDataURL(file);
+                        uploadedFiles.push(file);
+                    }
+                }
+            }
+
+            function uploadFiles(files) {
+                const formData = new FormData();
+                for (const file of files) {
+                    formData.append('input_file', file);
+                }
+
+                fetch('/upload_images', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.text())
+                    .then(data => {
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+
+            function isFileUploaded(fileName) {
+                return uploadedFiles.some(file => file.name === fileName);
+            }
+
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.classList.add('highlight');
+            });
+
+            dropZone.addEventListener('dragleave', () => {
+                dropZone.classList.remove('highlight');
+            });
+
+            dropZone.addEventListener('drop', handleDrop);
+        });
+
+        function startSlideshow() {
+            const selectedImages = document.querySelectorAll('.preview-item input[type="checkbox"]:checked + img');
+
+            if (selectedImages.length === 0) {
+                alert('Please select at least one image for the slideshow.');
+                return;
+            }
+
+            const slideshowContainer = document.createElement('div');
+            slideshowContainer.classList.add('slideshow-container');
+
+            selectedImages.forEach((image, index) => {
+                const slide = document.createElement('div');
+                slide.classList.add('slide');
+
+                const img = document.createElement('img');
+                img.src = image.src;
+                img.classList.add('slideshow-image');
+                slide.appendChild(img);
+
+                slideshowContainer.appendChild(slide);
+            });
+
+            document.body.appendChild(slideshowContainer);
+
+            showSlides(1);
+
+            function showSlides(n) {
+                const slides = document.querySelectorAll('.slideshow-container .slide');
+
+                if (n > slides.length) {
+                    slideshowContainer.remove();
+                    return;
+                }
+
+                slides.forEach(slide => (slide.style.display = 'none'));
+                slides[n - 1].style.display = 'block';
+
+                setTimeout(() => showSlides(n + 1), 2000);
+            }
+        }
+
+        document.getElementById('start-slideshow').addEventListener('click', () => {
+            window.location.href = "{{ url_for('user_home') }}";
+        });
+    </script>
+</body>
+
+</html>

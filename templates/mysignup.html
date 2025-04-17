@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Page</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f2f2f2;
+            background-image: url(static/pexels-ishan-421788.jpg);
+            background-size: cover;
+        }
+
+        .navbar {
+            padding: 0;
+            margin: 0;
+            height: 60px;
+            background-color: #2c3e50;
+            overflow: hidden;
+            position: fixed;
+            width: 100vw;
+            top: 0;
+            z-index: 1;
+            animation: fadeInDown 0.8s ease-in-out;
+        }
+
+        @keyframes fadeInDown {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .andromeda {
+            color: #ecf0f1;
+            font-size: 28px;
+            font-weight: bold;
+            padding: 14px 16px;
+            margin-right: auto;
+            transition: color 0.3s;
+        }
+
+        .navbar:hover .andromeda {
+            color: #3498db;
+        }
+
+        #yoo {
+            position: relative;
+            z-index: 1;
+            width: 400px;
+            background-color: rgba(255, 255, 255, 0.6);
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            text-align: center;
+            animation: fadeInUp 0.8s ease-in-out;
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-size: 16px;
+            color: #555;
+        }
+
+        input {
+            width: calc(100% - 20px);
+            padding: 12px;
+            margin-top: 8px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            border: none;
+            border-bottom: 2px solid black;
+            background: transparent;
+            font-size: 16px;
+            color: #333;
+            transition: border-bottom-color 0.3s;
+        }
+
+        input:focus {
+            border-bottom-color: #4caf50;
+        }
+
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 15px 20px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+    <img src="static/logo.png"
+        style="height: 100px; width:100px ; position:fixed;bottom:20px;right:20px; border-radius:50% ;z-index: 1;">
+
+    <form action="{{ url_for('register') }}" method="post">
+        <div id="yoo">
+            <h2>User Registration</h2>
+            <br>
+            <label for="name">Username:</label>
+            <input type="text" name="name" required placeholder="Enter username"><br>
+
+            <label for="email">Email:</label>
+            <input type="email" name="email" required placeholder="Enter Email-ID"><br>
+
+            <label for="password">Password:</label>
+            <input type="password" name="password" required placeholder="Password"><br>
+
+            <input type="submit" value="Register">
+
+            <h2>Already have an Account? <a href="{{url_for('login')}}">Login</a></h2>
+        </div>
+    </form>
+</body>
+
+</html>

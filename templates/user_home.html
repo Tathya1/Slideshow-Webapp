@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Page</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: #f2f2f2;
+            color: #333;
+            background-color: #d3e4ff;
+        }
+
+        header {
+            display: flex;
+            background-color: #4caf50;
+            text-align: center;
+            color: #fff;
+        }
+
+        #userDetails {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        #userDetails img {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+        }
+
+        #userInfo {
+            text-align: left;
+        }
+
+        h2 {
+            margin-bottom: 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #333;
+            color: #fff;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .navbar {
+            padding: 0;
+            margin: 0;
+            height: 60px;
+            background-color: #2c3e50;
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            width: 100vw;
+            z-index: 1000;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .andromeda {
+            color: #ecf0f1;
+            font-size: 28px;
+            font-weight: bold;
+            padding: 14px 16px;
+            margin-right: auto;
+        }
+
+        .userdetails {
+            color: #ecf0f1;
+            font-size: 20px;
+            font-weight: bold;
+            padding-top: 18px;
+            padding-right: 9px;
+        }
+
+        .user_image {
+            padding-right: 10px;
+            cursor: pointer;
+            width: 40px;
+            height: auto;
+        }
+
+        /* Dropdown styles */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            right: 0;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 800px;
+            margin: 120px auto 50px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .drop-zone {
+            border: 4px dashed #3498db;
+            padding: 40px;
+            cursor: pointer;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+
+        .drop-zone.highlight {
+            border-color: #2ecc71;
+        }
+
+        #preview-container {
+            margin-top: 20px;
+            text-align: wrap;
+            padding-bottom: 20px;
+        }
+
+        .preview-item {
+            position: relative;
+            float: left;
+            margin: 10px;
+            text-align: center;
+        }
+
+        .preview-image {
+            max-width: 100px;
+            max-height: 100px;
+            border-radius: 8px;
+        }
+
+        .preview-name {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            /* Semi-transparent background */
+            color: #fff;
+            /* Text color */
+            padding: 5px;
+            /* Adjust padding as needed */
+            margin: 0;
+            /* Remove default margin */
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            font-size: 14px;
+            word-wrap: break-word;
+        }
+
+        .checkbox-container {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+        }
+
+        .cancel-button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: #e74c3c;
+            color: #fff;
+            border: none;
+            padding: 5px;
+            cursor: pointer;
+            border-radius: 50%;
+            font-size: 12px;
+        }
+
+        #start-slideshow {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #2ecc71;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Stylish Sidebar Styles */
+        .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+
+        .sidebar a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 20px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .sidebar a:hover {
+            color: #f1f1f1;
+        }
+
+        .sidebar .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+        .openbtn {
+            font-size: 20px;
+            cursor: pointer;
+            background-color: #111;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+        }
+
+        .openbtn:hover {
+            background-color: #444;
+        }
+
+        .uploadyoo button {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: bold;
+            font-size: 16px;
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .uploadyoo button:hover {
+            background-color: #2980b9;
+        }
+
+        .createyoo button {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: bold;
+            font-size: 16px;
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .createyoo button:hover {
+            background-color: #2980b9;
+        }
+
+        .cssbuttons-io-button {
+            display: flex;
+            align-items: center;
+            font-family: inherit;
+            font-weight: 500;
+            font-size: 17px;
+            padding: 0.8em 1.5em 0.8em 1.2em;
+            color: white;
+            background: #e3cedb;
+            background: linear-gradient(0deg, rgb(255, 47, 47) 0%, rgb(137, 47, 255) 100%);
+            border: none;
+            box-shadow: 0 0.7em 1.5em -0.5em rgb(184, 146, 255);
+            letter-spacing: 0.05em;
+            border-radius: 20em;
+        }
+
+        .cssbuttons-io-button svg {
+            margin-right: 8px;
+        }
+
+        .cssbuttons-io-button:hover {
+            box-shadow: 0 0.5em 1.5em -0.5em rgb(149, 91, 255);
+        }
+
+        .cssbuttons-io-button:active {
+            box-shadow: 0 0.3em 1em -0.5em rgb(160, 109, 255);
+        }
+
+        h1 {
+            font-size: 35px;
+            margin: 0;
+            font-family: 'frozen';
+            font-weight: 700;
+
+            background-image: url("https://assets.codepen.io/209981/ice.jpg");
+            -webkit-background-clip: text;
+            background-size: contain;
+
+            text-align: center;
+            color: transparent;
+            font-weight: 900;
+            position: relative;
+
+
+
+            &::before {
+                content: attr(data-heading);
+                position: absolute;
+
+                background: linear-gradient(45deg, rgba(255, 255, 255, 0) 45%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0) 55%, rgba(255, 255, 255, 0) 100%);
+
+                animation: shine 4s infinite;
+                background-size: 200%;
+
+
+            }
+        }
+
+        @keyframes shine {
+            0% {
+                background-position: -120%;
+            }
+
+            10% {
+                background-position: 120%;
+            }
+
+            100% {
+                background-position: 120%;
+            }
+        }
+
+
+
+
+
+        /* Not needed for demo */
+
+        @font-face {
+            font-family: 'frozen';
+            src: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/209981/Ice%20kingdom%20-%20Bold%20-%20Por%20Kustren.woff');
+        }
+
+        /* CSS for image previews */
+        .preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .preview-item {
+            margin: 10px;
+            text-align: center;
+        }
+
+        .preview-image {
+            max-width: 100px;
+            max-height: 100px;
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .preview-image:hover {
+            transform: scale(1.1);
+        }
+
+        #search {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: row-reverse;
+            margin-right: 20px;
+        }
+
+        #searchInput {
+            padding: 10px;
+            width: 300px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        #searchInput:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+
+        /* CSS for image previews */
+        .preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.5s ease-in-out;
+            /* Add animation */
+        }
+
+        .preview-item {
+            margin: 10px;
+            text-align: center;
+            border-radius: 8px;
+            width: 200px;
+            /* Fixed width for all preview items */
+            height: 200px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            animation: zoomIn 0.5s ease-in-out;
+            /* Add animation */
+        }
+
+        .preview-image {
+            max-width: 200px;
+            max-height: 200px;
+            object-fit: cover;
+            /* Maintain aspect ratio and cover the entire box */
+            border-radius: 8px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .preview-image:hover {
+            transform: scale(1.1);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .checkbox-container {
+            display: inline-block;
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            user-select: none;
+            z-index: 100;
+
+        }
+
+        .checkbox-container input {
+            position: absolute;
+            opacity: 1;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+            z-index: 100;
+        }
+
+        .checkmark {
+            position: absolute;
+            top: 0px;
+            left: 0;
+            height: 25px;
+            width: 25px;
+            background-color: #eee;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            z-index: 100;
+
+        }
+
+        .checkbox-container:hover input~.checkmark {
+            background-color: #ccc;
+            z-index: 100;
+
+        }
+
+        .checkbox-container input:checked~.checkmark {
+            background-color: #2196F3;
+            z-index: 100;
+
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+            z-index: 100;
+
+        }
+
+        .checkbox-container input:checked~.checkmark:after {
+            display: block;
+            z-index: 100;
+
+        }
+
+        .checkbox-container .checkmark:after {
+            left: 9px;
+            top: 5px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+            z-index: 100;
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <br><br><br><br>
+    <div id="search">
+        <input type="text" id="searchInput" placeholder="Search photos..." onkeyup="searchImages()">
+    </div>
+
+
+    <img src="static/logo.png"
+        style="height: 100px; width:100px ; position:fixed;bottom:20px;right:20px; border-radius:50%; z-index: 1; ">
+
+    <div class="navbar" style="overflow: visible;z-index: 1000;">
+        <div class="openbtn" onclick="openNav()" style="padding-top: 20px;">☰</div>
+        <div class="andromeda">
+            <h1 contenteditable data-heading="Andromeda">
+                ANDROMEDA
+            </h1>
+        </div>
+        <a href="{{url_for('video_edit')}}" style="color: white;text-decoration: none;">
+            <div class="createyoo" style="margin-right: 30px;margin-top: 10px;">
+                <button class="cssbuttons-io-button" onclick="createVideo()">
+                    <img src="static/video.png" alt="" style="height: 23px;width: 27px;margin-right: 5px;">
+                    Create Video
+                </button>
+            </div>
+        </a>
+        <a href="{{url_for('upload_images')}}" style="color: white;text-decoration: none;">
+            <div class="uploadyoo" style="margin-right: 30px;margin-top: 12px;"><button class="cssbuttons-io-button">
+                    <svg viewBox="0 0 640 512" fill="white" height="1em" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128H144zm79-217c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l39-39V392c0 13.3 10.7 24 24 24s24-10.7 24-24V257.9l39 39c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0l-80 80z">
+                        </path>
+                    </svg>
+                    Upload
+                </button>
+            </div>
+        </a>
+        <div class="userdetails">Welcome, {{user_home_name}}</div>
+        <div class="dropdown">
+            <img src="static/avatar-default-icon.png" alt="Dropdown" class="user_image" style="margin-top: 9px;">
+            <div class="dropdown-content">
+                <a href="#">Edit Profile</a>
+                <a href="{{ url_for('logout') }}">Logout</a>
+            </div>
+        </div>
+    </div>
+
+    <div style="display: flex;flex-direction: column;">
+
+        <div id="preview-container" style="margin-left: 30px;">
+            {% for image in user_images %}
+            <div class="preview-item">
+                <label class="checkbox-container">
+                    <input type="checkbox" name="selected_images" value="{{ image.name }}">
+                    <span class="checkmark"></span>
+                </label>
+                <img src="data:image/png;base64,{{ image.data }}" class="preview-image" alt="{{ image.name }}">
+                <p class="preview-name">{{ image.name }}</p>
+            </div>
+            {% endfor %}
+        </div>
+
+
+        <br><br>
+
+        <footer>
+            &copy; 2024 AndromedaNova Technologies. All rights reserved.
+        </footer>
+
+    </div>
+
+    <div id="mySidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+        <a href="#">Dashboard</a>
+        <a href="{{url_for('upload_images')}}">Upload</a> <!-- Added Files section -->
+        <a href="#">Settings</a>
+    </div>
+
+    <script>
+        function openNav() {
+            document.getElementById("mySidebar").style.width = "250px";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidebar").style.width = "0";
+        }
+
+        function fetchAndDisplayImages() {
+            fetch('/get_images')
+                .then(response => response.json())
+                .then(data => {
+                    const previewContainer = document.getElementById('preview-container');
+                    previewContainer.innerHTML = '';
+                    data.images.forEach(image => {
+                        const img = document.createElement('img');
+                        // img.src = data:image/png;base64,${image.data};
+                        img.src = 'data:image/png;base64,' + image.data;
+                        img.alt = image.name;
+                        img.classList.add('preview-image');
+
+                        const p = document.createElement('p');
+                        p.textContent = image.name;
+                        p.classList.add('preview-name');
+
+                        const checkboxContainer = document.createElement('label');
+                        checkboxContainer.classList.add('checkbox-container');
+
+                        const checkbox = document.createElement('input');
+                        checkbox.type = 'checkbox';
+                        checkbox.name = 'selected_images';
+                        checkbox.value = image.name;
+
+                        const checkmark = document.createElement('span');
+                        checkmark.classList.add('checkmark');
+
+                        checkboxContainer.appendChild(checkbox);
+                        checkboxContainer.appendChild(checkmark);
+
+                        const previewItem = document.createElement('div');
+                        previewItem.classList.add('preview-item');
+                        previewItem.appendChild(checkboxContainer);
+                        previewItem.appendChild(img);
+                        previewItem.appendChild(p);
+
+                        previewContainer.appendChild(previewItem);
+                    });
+                })
+                .catch(error => console.error('Error fetching images:', error));
+        }
+
+        // Call the function when the page loads
+
+        function searchImages() {
+            // Get the input value
+            const searchText = document.getElementById('searchInput').value.toLowerCase();
+
+            // Get all preview items
+            const previewItems = document.querySelectorAll('.preview-item');
+
+            // Loop through each preview item and hide/show based on search text
+            previewItems.forEach(item => {
+                const imageName = item.querySelector('.preview-name').textContent.toLowerCase();
+                if (imageName.includes(searchText)) {
+                    item.style.display = 'block';  // Show if name includes search text
+                } else {
+                    item.style.display = 'none';   // Hide if name does not include search text
+                }
+            });
+        }
+
+
+
+        function createVideo() {
+            const selectedImages = [];
+            const checkboxes = document.querySelectorAll('input[name="selected_images"]:checked');
+            checkboxes.forEach(checkbox => {
+                selectedImages.push(checkbox.value);
+            });
+
+            // Send selectedImages array to the server using fetch or AJAX
+            // Example using fetch:
+            fetch('/create_video', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ selectedImages }),
+            })
+                .then(response => {
+                    // Handle response
+                })
+                .catch(error => {
+                    // Handle error
+                });
+        }
+
+        window.onload = fetchAndDisplayImages;
+    </script>
+</body>
+
+</html>

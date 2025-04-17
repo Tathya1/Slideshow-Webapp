@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Page</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f2f2f2;
+            background-image: url(static/pexels-ishan-421788.jpg);
+            background-size: cover;
+        }
+
+        #yoo {
+            background-color: rgba(255, 255, 255, 0);
+            /* Adjust the opacity (last parameter) */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 400px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-size: 16px;
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* background: linear-gradient(45deg, #4285f4, #34a853, #fbbc05, #ea4335); */
+            z-index: -1;
+        }
+
+        #yoo {
+            position: relative;
+            z-index: 1;
+            background-color: rgba(255, 255, 255, 0.6);
+            /* Adjust the opacity (last parameter) */
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            text-align: center;
+            margin: 20px;
+            animation: fadeInUp 0.8s ease-in-out;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-size: 16px;
+            color: #555;
+        }
+
+        input {
+            width: calc(100% - 20px);
+            padding: 12px;
+            margin-top: 8px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            border: none;
+            border-bottom: 2px solid black;
+            background: transparent;
+            font-size: 16px;
+            color: #333;
+            transition: border-bottom-color 0.3s;
+        }
+
+        input:focus {
+            border-bottom-color: #4caf50;
+        }
+
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 15px 20px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    {% if alert_message %}
+    <script>
+        alert("Off Course! Recalibrate Login");
+    </script>
+    {% endif %}
+
+    <img src="static/logo.png"
+        style="height: 100px; width:100px ; position:fixed;bottom:20px;right:20px; border-radius:50%;z-index: 1; ">
+
+    <form id="loginForm" action="{{ url_for('login') }}" method="post">
+        <div id="yoo">
+            <h2>User Login</h2>
+            <br>
+            <label for="username">Email:</label>
+            <input type="username" id="email" name="email" required placeholder="Enter your email"><br>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required placeholder="Enter your password"><br>
+
+            <input type="submit" value="Login">
+
+            <input type="checkbox" id="remember_me" name="remember_me">
+            <label for="remember_me" style="margin-top: 0px;">Remember Me</label><br>
+
+            <h2>Don't have an Account? <a href="{{url_for('register')}}">Sign Up</a></h2>
+        </div>
+    </form>
+
+    <script>
+
+        document.getElementById('loginForm').addEventListener('submit', function (event) {
+            var email = document.getElementById('email').value.trim();
+            var password = document.getElementById('password').value.trim();
+
+            if (email === '' || password === '') {
+                alert('Please fill in all fields');
+                event.preventDefault(); // Prevent form submission
+                return;
+            }
+
+            fetch('/login', {
+                method: 'POST',
+                body: new FormData(document.getElementById('loginForm')),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message === "User not found!") {
+                        alert('User not found!');
+                    }
+                    else if (data.message === "Incorrect password!") {
+                        alert('Incorrect password!')
+                    }
+                    else {
+                        // Handle other responses, e.g., redirect to another page
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+
+    </script>
+</body>
+
+</html>

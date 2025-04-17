@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+        /*
+              .music-player {
+                  position: relative;
+                  width: 50vw;
+                  height: 50vh;
+                  background-color: #ffffff;
+                  border: 1px solid #ccc;
+                  border-radius: 8px;
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                  justify-content: center;
+              }
+      
+              .controls {
+                  position: absolute;
+                  top: 50%;
+                  left: 50%;
+                  transform: translate(-50%, -50%);
+              }
+      
+              .icon {
+                  font-size: 24px;
+                  color: #333;
+                  cursor: pointer;
+              }
+      
+              .back-forward {
+                  position: absolute;
+                  top: 50%;
+                  transform: translateY(-50%);
+                  left: 5px;
+              cursor: pointer;
+              }
+      
+              .forward {
+                  right: 5px;
+                  left: auto;
+              }
+      
+              .dropdown {
+                  position: absolute;
+                  bottom: 10px;
+                  right: 10px;
+              }
+      
+              .dropdown select {
+                  padding: 8px;
+                  font-size: 16px;
+                  border-radius: 5px;
+                  border: 1px solid #ccc;
+                  background-color: #fff;
+                  cursor: pointer;
+              }
+      
+              */
+
+        /* Body styles */
+        /* Body styles */
+        body {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://i.pinimg.com/originals/04/2e/75/042e750cbc58c97de7c0a07512475e5d.jpg);
+            background-size: cover;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Music player container */
+        .music-player {
+            position: relative;
+            width: 80vw;
+            height: 80vh;
+            background-color: rgba(255, 255, 255, 0.8);
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            /* Hide overflow for rounded corners */
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            /* Add box shadow for depth */
+        }
+
+        /* Logo */
+        .logo {
+            height: 100px;
+            width: 100px;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            border-radius: 50%;
+            z-index: 10;
+            /* Ensure it's on top of other content */
+        }
+
+        /* Video player */
+        #videoPlayer {
+            height: 80%;
+            width: 100%;
+        }
+
+        /* Controls */
+        .controls {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 500;
+            /* Ensure controls are on top */
+        }
+
+        /* Control icons */
+        .icon {
+            font-size: 36px;
+            color: #fff;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            /* Smooth color transition */
+        }
+
+        .icon:hover {
+            color: #ff5733;
+            /* Change color on hover */
+        }
+
+        /* Backward and forward buttons */
+        .back-forward {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            z-index: 500;
+            /* Ensure buttons are on top */
+        }
+
+        .forward {
+            right: 10%;
+            /* Adjust the position */
+            left: 60%;
+        }
+
+        .back {
+            left: 40%;
+        }
+
+        /* Quality dropdown menu */
+        .dropdown {
+            position: absolute;
+            bottom: 20px;
+            /* Adjusted position */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 5;
+            /* Ensure dropdown is on top */
+        }
+
+        .dropdown select {
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #f9aa98;
+            /* Adjusted border color */
+            background-color: transparent;
+            color: #33ff36;
+            background-color: rgba(0, 0, 0, 0.734);
+            /* Adjusted text color */
+            cursor: pointer;
+            appearance: none;
+            /* Remove default appearance */
+            outline: none;
+            /* Remove focus outline */
+            transition: border-color 0.3s ease;
+            /* Smooth border transition */
+        }
+
+        .dropdown select:hover,
+        .dropdown select:focus {
+            border-color: #fff;
+            /* Change border color on hover/focus */
+        }
+
+        .navbar {
+            padding: 0;
+            margin: 0;
+            height: 60px;
+            background-color: #2c3e50;
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            width: 100vw;
+            z-index: 1000;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .openbtn {
+            font-size: 20px;
+            cursor: pointer;
+            background-color: #111;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+        }
+
+        .openbtn:hover {
+            background-color: #444;
+        }
+
+        .andromeda {
+            color: #ecf0f1;
+            font-size: 28px;
+            font-weight: bold;
+            padding: 14px 16px;
+            margin-right: auto;
+        }
+
+        #userDetails {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        #userDetails img {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+        }
+
+        .userdetails {
+            color: #ecf0f1;
+            font-size: 20px;
+            font-weight: bold;
+            padding-top: 18px;
+            padding-right: 9px;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            right: 0;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .user_image {
+            padding-right: 10px;
+            cursor: pointer;
+            width: 40px;
+            height: auto;
+        }
+
+        h1 {
+            font-size: 35px;
+            margin: 0;
+            font-family: 'frozen';
+            font-weight: 700;
+
+            background-image: url('https://assets.codepen.io/209981/ice.jpg');
+            -webkit-background-clip: text;
+            background-size: contain;
+
+            text-align: center;
+            color: transparent;
+            font-weight: 900;
+            position: relative;
+
+            &::before {
+                content: attr(data-heading);
+                position: absolute;
+
+                background: linear-gradient(45deg, rgba(255, 255, 255, 0) 45%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0) 55%, rgba(255, 255, 255, 0) 100%);
+
+                animation: shine 4s infinite;
+                background-size: 200%;
+            }
+        }
+
+        @keyframes shine {
+            0% {
+                background-position: -120%;
+            }
+
+            10% {
+                background-position: 120%;
+            }
+
+            100% {
+                background-position: 120%;
+            }
+        }
+
+        /* Not needed for demo */
+
+        @font-face {
+            font-family: 'frozen';
+            src: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/209981/Ice%20kingdom%20-%20Bold%20-%20Por%20Kustren.woff');
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            right: 0;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+
+        .sidebar a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 20px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .sidebar a:hover {
+            color: #f1f1f1;
+        }
+
+        .sidebar .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+        #POO:hover {
+            cursor: pointer;
+        }
+    </style>
+    <title>Video Slideshow</title>
+</head>
+
+<body>
+    <div class="navbar" style="overflow: visible;z-index: 1000;">
+        <button onclick="goBack()" style="background-color: #111;" id="POO"><img src="static/left-arrow_5467935.png"
+                alt=""
+                style="height: 40px;width: 40px;margin-top: 5px;;margin-right: 9px;margin-left: 10px;" /></button>
+
+        <div class="openbtn" onclick="openNav()" style="padding-top: 20px;">☰</div>
+        <div class="andromeda">
+            <h1 contenteditable data-heading="Andromeda">ANDROMEDA</h1>
+        </div>
+
+        <div style="display: flex;flex-direction: row-reverse;justify-content: left;">
+
+            <div class="userdetails">Welcome, {{ user_home_name }}</div>
+            <div id="mySidebar" class="sidebar">
+                <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+                <a href="#">Dashboard</a>
+                <a href="{{ url_for('upload_images') }}">Upload</a> <!-- Added Files section -->
+                <a href="#">Settings</a>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="music-player">
+            <!-- Video player with controls -->
+            <video id="videoPlayer" style="height: 100%; width: 100%;" controls autoplay>
+                <source src="static/output1.mp4" type="video/mp4" />Your browser does not support the video tag.
+            </video>
+            <!-- Quality dropdown menu -->
+        </div>
+        <div class="main" style="display: flex;">
+            <div class="dropdown">
+                <select id="qualitySelect" onchange="changeQuality()">
+                    <option value="high">High Quality</option>
+                    <option value="medium">Medium Quality</option>
+                    <option value="low">Low Quality</option>
+                </select>
+            </div>
+        </div>
+        <div class="controls">
+            <i class="icon fas fa-play" onclick="togglePlayPause()"></i>
+        </div>
+        <div class="back-forward back" onclick="rewindTrack()">
+            <i class="fa-solid fa-rotate-left"></i>
+        </div>
+        <div class="back-forward forward" onclick="forwardTrack()">
+            <i class="fa-solid fa-rotate-right"></i>
+        </div>
+    </div>
+    <script>
+        function goBack() {
+            window.history.back()
+        }
+        function openNav() {
+            document.getElementById('mySidebar').style.width = '250px'
+        }
+
+        function closeNav() {
+            document.getElementById('mySidebar').style.width = '0'
+        }
+
+        function skipBackward(seconds) {
+            const video = document.querySelector('.video-container video');
+            video.currentTime -= seconds; // Decrease currentTime by 'seconds'
+        }
+
+        // Function to skip forward
+        function skipForward(seconds) {
+            const video = document.querySelector('.video-container video');
+            video.currentTime += seconds; // Increase currentTime by 'seconds'
+        }
+
+        let isPlaying = false
+
+        function togglePlayPause() {
+            const video = document.getElementById('videoPlayer')
+            const playPauseIcon = document.querySelector('.controls .icon')
+
+            if (isPlaying) {
+                video.pause()
+                playPauseIcon.classList.remove('fa-pause')
+                playPauseIcon.classList.add('fa-play')
+            } else {
+                video.play()
+                playPauseIcon.classList.remove('fa-play')
+                playPauseIcon.classList.add('fa-pause')
+            }
+            isPlaying = !isPlaying
+        }
+
+        function rewindTrack() {
+            const video = document.getElementById('videoPlayer');
+
+            video.currentTime -= 2;
+
+        }
+
+        function forwardTrack() {
+            const video = document.getElementById('videoPlayer');
+            video.currentTime += 2;
+        }
+
+        function changeQuality() {
+            var selectedQuality = document.getElementById('qualitySelect').value
+            console.log(selectedQuality)
+
+            switch (selectedQuality) {
+                case 'high':
+                    // Redirect to video slideshow page with the URL of the new video
+                    document.getElementById('videoPlayer').src = 'static/output1.mp4'
+
+                    break
+                case 'medium':
+                    document.getElementById('videoPlayer').src = 'static/output2.mp4'
+
+                    break
+                case 'low':
+                    document.getElementById('videoPlayer').src = 'static/output3.mp4'
+
+                    break
+                default:
+                    console.log('Invalid quality selected')
+                    return
+            }
+
+            // Make a POST request to the selected endpoint
+
+            // Set headers, handle response, etc.
+            // Continue with your AJAX logic...
+        }
+
+
+    </script>
+</body>
+
+</html>
